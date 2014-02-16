@@ -9,26 +9,19 @@ import java.util.*;
 		 * 
 		 */
 		private static final long serialVersionUID = 7600343803563417992L;
-		private Hashtable<String, User> list = new Hashtable<String, User>();
-		private Hashtable<String, List<String>> group_list = new Hashtable<String, List<String>>();//(GROUPNAME,LISTofMEMBERS)
+		public Hashtable<String, User> list = new Hashtable<String, User>();
+		public Hashtable<String, List<String>> group_list = new Hashtable<String, List<String>>();//(GROUPNAME,LISTofMEMBERS)
 		
 		
 		public synchronized void createGroup(String requester,String groupname){
 			if(!group_list.containsKey(groupname)){
-				System.out.println("Creating a group");
 				List<String>newGroup = new ArrayList<String>();
 				newGroup.add(requester);
-				group_list.put(groupname, newGroup);
+				group_list.put(groupname, newGroup);	
 				
-				System.out.println("Group was created");
-				Enumeration<String> enumKey = group_list.keys();
-				while(enumKey.hasMoreElements()){ //remove username from all groups in group_list
-					String key = enumKey.nextElement();
-				    List<String> val = group_list.get(key);
-				    System.out.println("one group is "+ key +" with value "+val);
-				}	
+				//ERROR!!!!!!!!THIS SHOULD MAKE SAID USER THE OWNER OF THE GROUP!
 			}else{
-				System.out.println("Already a group with this name...");
+				System.out.println("Already a group with this name");
 				//group list already has name
 			}
 		}
@@ -154,16 +147,12 @@ import java.util.*;
 			}
 			
 			if(!group_list.isEmpty()){
-				System.out.println("Group list isn't empty");
 			/////--------GROUP_LIST--------////////
 				if(group_list.containsKey(groupname)){ //if the group is already alive and kicking
-					System.out.println("Group list contains the group name" + group_list.contains(groupname));
 					if(group_list.get(groupname).contains(user)){
-					System.out.println("User already in group...");
+					System.out.println("User is already in the group");
 					//do nothing, user already part of the group
 					}else{
-						System.out.println("User isn't in the group and it exists");
-						System.out.println("Adding user "+user+" to group "+groupname);
 						group_list.get(groupname).add(user); //add user to the list of members of GROUPNAME
 					}
 				}else{
@@ -187,7 +176,7 @@ import java.util.*;
 		}
 		
 	
-	class User implements java.io.Serializable {
+	public class User implements java.io.Serializable {
 
 		/**
 		 * 
