@@ -8,7 +8,7 @@ import java.util.*;
 		
 	/*Serializable so it can be stored in a file for persistence */
 	private static final long serialVersionUID = -8911161283900260136L;
-	private ArrayList<ShareFile> list;
+	public ArrayList<ShareFile> list;
 	
 	public FileList()
 	{

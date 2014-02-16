@@ -6,7 +6,7 @@ public class ShareFile implements java.io.Serializable, Comparable<ShareFile> {
 	 */
 	private static final long serialVersionUID = -6699986336399821598L;
 	private String group;
-	private String path;
+	public String path;
 	private String owner;
 	
 	public ShareFile(String _owner, String _group, String _path) {

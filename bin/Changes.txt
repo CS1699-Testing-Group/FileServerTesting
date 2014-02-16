@@ -1,0 +1,46 @@
+Updated client.java with connect() method completed 
+
+Added GroupClientEnd.java 
+
+GroupThread updated with all handler code, still needs helper code for the handler code
+
+FileThread updated with some handler code-(if(e.getMessage().equals("LFILES")))
+-zhanjie
+
+
+Finishing GROUPTHREAD.java class, including all methods. Still need to consult specification paper in order to confirm full functionality. Changed UserList.java in order to include data structure for groups
+
+
+
+2/6/14 1:37am
+
+MainUserInterface.java added, and GroupClientSubInterface.java added. FileClientSubInterface will need created.
+
+MainUserInterface is the main UI file. It connects to GroupClientSubInterface when the user selects to connect to the that
+server.This allows for all the functionality you guys have been implementing to be functional.
+
+Currently, it crashes while connecting to the group server. Theres a lot of code in there so I'll need to test it tomorrow after school and work.
+
+I'm quite tired so I may have made a typo or a stupid error.
+
+-Mike
+
+
+
+2/6-2/7
+
+Can we add a check to return false if while creating a user, the user already exists?
+
+Same with adding a new group?
+
+Groups are saved improperly it seems. Everything is saving to UserList.bin Should there be a seperate file for groups?
+
+
+2/8
+FileClientSubInterface added, though none of the functionality works from the called commands.
+Another bug added to the bug rtf doc.
+
+2/8 4pm
+
+MainUserInterface.java - Fixed Fileserver connection
+Squashed a few undiscovered bugs in UI
