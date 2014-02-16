@@ -25,34 +25,49 @@ public class UserListTest {
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 	UserList userList;
 	
+	//initialize the mockeduserList object. Is used below.
 	@Mock
 	UserList mockedUserList = Mockito.mock(UserList.class);
 	
-	@Before //the setup creates a new, empty instance of the group server database system
+	//creates a new UserList object that will be used for all tests
+	//initializes the print streams which are used to compare System.out.println
+	//string values with the error messages I expected.
+	@Before 
 	public void setUp() throws Exception {
 		userList = new UserList();
 		MockitoAnnotations.initMocks(mockedUserList);
 		System.setOut(new PrintStream(outContent));
 	    System.setErr(new PrintStream(errContent));
 	}
-
+	
+	//tear down the print streams
 	@After
 	public void tearDown() throws Exception {
 		System.setOut(null);
 	    System.setErr(null);
 	}
 	
-	@Test //tests functionality of checking the system for a username that doesn't exist
+	//tests functionality of checking the system for a username that doesn't exist
+	//The list does not have any users, so it should return false 
+	//TEST BY: HSB
+	@Test 
 	public void CheckUserTest1(){
 		assertFalse(userList.checkUser("John"));
 	}
-	@Test //tests functionality of checking the system for a username that exists
+	//tests functionality of checking the system for a username that exists
+	//The list has one user John, so it should return true.
+	//TEST BY: HSB
+	@Test 
 	public void CheckUserTest2(){
 		userList.addUser("John");
 		assertTrue(userList.checkUser("John"));
 	}
 	
-	@Test //tests adding of a user to the system. USES a mocked instance of the USER class because it is not important.
+	//tests adding of a user to the system. USES a mocked instance of the USER class
+	//to subvert any dependency issues because the User class is not even used.
+	//Adding a user John should work, so I expect the check to be true.
+	//TEST BY:HSB
+	@Test 
 	public void AddUserTest(){
 		boolean first = userList.checkUser("John");
 		if(!first){
@@ -60,33 +75,53 @@ public class UserListTest {
 			assertTrue(userList.checkUser("John"));
 		}
 	}
-	@Test //test creation and existence of a group on the fresh List
+	//test creation and existence of a group on the fresh List
+	//I expect that after creating a group, it should exist (return true)
+	//TEST BY:HSB
+	@Test 
 	public void TestCreateGroup(){
 		userList.createGroup("John", "JohnsGroup");
 		assertTrue(userList.groupExists("JohnsGroup"));
 	}
 	
-	@Test //tests an error given the creation of an already existing group
+	//tests an error given the creation of an already existing group
+	//If a group already exists, creating one with the name prints out, 
+	//"Already a group with this name", so we check to see if the printstream
+	//reflects this
+	//TEST BY: HSB
+	@Test 
 	public void TestAlreadyCreatedGroup(){
 		userList.createGroup("John", "JohnsGroup");
 		userList.createGroup("John", "JohnsGroup");
 		assertEquals("Already a group with this name\n",outContent.toString());
 	}
 	
-	@Test //creating a group should add the creator to the list of group members. we assert isEmpty is false. -HSB
+	//creating a group should add the creator to the list of group members.
+	//Getting group members of a group we just created should return the creator in the 
+	//ArrayList as the only member, so it shouldn't be empty
+	//TEST BY: HSB
+	@Test 
 	public void GetCreatorGroupTest(){
 		userList.createGroup("John", "JohnsGroup");
 		assertFalse(userList.getGroupMembers("JohnsGroup").isEmpty());
 	}
 	
-	@Test //A group with no members should return an empty arrayList of members. we assert that isEmpty is true. -HSB
+	//A group with no members should return an empty arrayList of members.
+	//Removing John from the group where he only exists should leave an empty group,
+	//which we assert as true
+	//TEST BY: HSB
+	@Test
 	public void GetNullGroupMembersTest(){
 		userList.createGroup("John", "JohnsGroup");
 		userList.removeMemberFromGroup("John", "JohnsGroup");
 		assertTrue(userList.getGroupMembers("JohnsGroup").isEmpty());
 	}
 	
-	@Test //tests adding one user to a created group. -HSB
+	//tests adding one user to a created group
+	//The array list from getting group members should only contain John because he 
+	//created it. We assert that the first element of the group's members is John
+	//TEST BY: HSB
+	@Test 
 	public void AddOneUserToGroupTest(){
 		userList.addUser("John");
 		userList.createGroup("John", "JohnsGroup");
@@ -96,7 +131,12 @@ public class UserListTest {
 		assertEquals(UsersInGroup.get(0),"John");
 	}
 	
-	@Test //adding user to group he/she is already in should cause an error message -HSB
+	//adding user to group he/she is already in should cause an error message
+	//The error message "User is already in the group" is printed if the user is 
+	//already in said group. We expect the System.out.println from the server
+	//to match the error message. 
+	//TEST BY: HSB
+	@Test 
 	public void AddExistingUserToSameGroupTest(){
 		userList.addUser("John");
 		userList.createGroup("John", "JohnsGroup");
@@ -104,7 +144,11 @@ public class UserListTest {
 		assertEquals("User is already in the group\n",outContent.toString());
 	}
 	
-	@Test //adding multiple users to a group and check to see if it works -HSB
+	//adding multiple users to a group should populate that groups list with those names
+	//We assert that getting the group members of said group should equal the expected 
+	//list of members explicitly created
+	//TEST BY: HSB
+	@Test 
 	public void AddUsersToSameGroupTest(){
 		userList.addUser("John");
 		userList.addUser("Mary");
@@ -121,8 +165,10 @@ public class UserListTest {
 		assertEquals(expected,userList.getGroupMembers("JohnsGroup"));
 	}
 	
-	
-	@Test //tests the deleteUser method, which should remove said user from the userList
+	//tests the deleteUser method, which should remove said user from the global
+	//list of users. Checking a user that doesn't exist in the list should return false.
+	//TEST BY: HSB
+	@Test 
 	public void DeleteUserTest1(){
 		boolean first = userList.checkUser("John");
 		if(!first){
@@ -132,7 +178,10 @@ public class UserListTest {
 		assertFalse(userList.checkUser("John"));
 	}
 	
-	@Test //simple test to see if deleting a user removes him from a group to which he/she belongs -HSB
+	//Deleting a user should remove him/her from any groups he/she belongs to. We expect
+	//Johns group list to be empty once we remove him from his only group.
+	//TEST BY: HSB
+	@Test 
 	public void DeleteUserTest(){
 		userList.addUser("John");
 		userList.createGroup("John", "JohnsGroup");
@@ -141,8 +190,11 @@ public class UserListTest {
 		assertEquals(expected,userList.getGroupMembers("JohnsGroup"));
 	}
 
-	@Test //checks if a user who creates a group becomes the owner of that group. uses GetUserOwnership method
-			//to compare arrayList values. -HSB
+	//checks if a user who creates a group, then they become owner of that group
+	//We assert that the expected array of groups matches the output of the method 
+	//getUserOwnership(USER) - only JohnsGroup
+	//TEST BY: HSB
+	@Test 
 	public void OwnershipTest(){
 		userList.addUser("John");
 		userList.createGroup("John", "JohnsGroup");
@@ -150,10 +202,14 @@ public class UserListTest {
 		ArrayList<String> expected = new ArrayList<String>();
 		expected.add("JohnsGroup");
 		assertEquals(expected,actual);
-		//This fails because the code we wrote for our project is wrong. yay for finding errors in OUR code!!
+		//This fails because the code we wrote for our project is wrong.
 	}
 	
-	@Test //tests dependency between User(getOwnership) method and userList(getUserOwnership) method using mocking and stubs
+	//tests dependency between User(getOwnership) method and userList(getUserOwnership)
+	//methods. I use a stub to auto-generate a response from the User class, which the 
+	//UserList class depends on for the execution of the getUserOwnership method
+	//TEST BY: HSB
+	@Test 
 	public void DependencyTest(){
 		User mockeduser = Mockito.mock(UserList.User.class); //mocked version of the user class
 		ArrayList<String> expectedList = new ArrayList<String>(); //set up the arraylist we want to see
@@ -174,7 +230,11 @@ public class UserListTest {
 		assertEquals(expected,actual);
 	}
 	
-	@Test //tests the functionality of the addowner method, which should flag a user as owner of a group.
+	//tests the functionality of the addowner method
+	//Adding a user as an owner of a group populates their database entry to reflect this
+	//which is replayed back through the getUserOwnership method.
+	//TEST BY : HSB
+	@Test 
 	public void AddOwnershipTest(){
 		userList.addUser("John");
 		userList.createGroup("John", "JohnsGroup");
