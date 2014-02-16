@@ -1,3 +1,4 @@
+package Main;
 public class ShareFile implements java.io.Serializable, Comparable<ShareFile> {
 
 	/**

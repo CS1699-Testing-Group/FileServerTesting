@@ -1,3 +1,4 @@
+package Main;
 /* This list represents the users on the server */
 import java.util.*;
 

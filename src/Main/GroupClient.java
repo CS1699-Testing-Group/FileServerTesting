@@ -1,3 +1,4 @@
+package Main;
 /* Implements the GroupClient Interface */
 
 import java.util.ArrayList;

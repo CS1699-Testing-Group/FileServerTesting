@@ -1,3 +1,4 @@
+package Main;
 /* FileClient provides all the client functionality regarding the file server */
 
 import java.io.File;

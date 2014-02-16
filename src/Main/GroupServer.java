@@ -1,3 +1,4 @@
+package Main;
 /* Group server. Server loads the users from UserList.bin.
  * If user list does not exists, it creates a new list and makes the user the server administrator.
  * On exit, the server saves the user list to file. 
