@@ -1,10 +1,12 @@
 package Main;
+import java.io.ByteArrayOutputStream;
 import java.util.Scanner;
 import java.util.List;
 
 public class FileClientSubInterface
  {
-	FileClient fileClient = new FileClient();
+	public FileClient fileClient = new FileClient();
+
 	
 	public boolean startFileInterface(String server, int port, UserToken token)
 	{

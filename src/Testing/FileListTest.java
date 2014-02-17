@@ -25,7 +25,10 @@ public class FileListTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-
+    /*
+     * Tests adding a file to the list
+     * ADM
+     */
 	@Test
 	public void testAddFile() 
 	{
@@ -40,7 +43,10 @@ public class FileListTest {
 		assertEquals(sf.getPath() , "TestPath");
 		assertEquals(sf.getOwner() ,"TestOwner");
 	}
-	
+	/*
+	 * Tests removing a file from the list
+	 * ADM
+	 */
 	@Test
 	public void testRemoveFile()
 	{
@@ -51,7 +57,10 @@ public class FileListTest {
 		assertEquals(f.list.size(), 0);
 				
 	}
-	
+	/*
+	 * Tests checking a file in the list
+	 * ADM
+	 */
 	@Test
 	public void testCheckFile()
 	{
@@ -60,7 +69,10 @@ public class FileListTest {
 		f.list.add(sf);
 		assertEquals(f.checkFile("TestPath"), true);
 	}
-	
+	/*
+	 * Test listing file in sorted order
+	 * ADM
+	 */
 	@Test
 	public void testGetFiles()
 	{
@@ -90,7 +102,10 @@ public class FileListTest {
 		assertEquals(sfl.get(3),sfd);
 
 	}
-	
+	/*
+	 * Tests getting file from a file path
+	 * ADM
+	 */
 	@Test
 	public void testGetFile()
 	{
