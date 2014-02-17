@@ -21,7 +21,7 @@ import java.util.*;
 				
 				//ERROR!!!!!!!!THIS SHOULD MAKE SAID USER THE OWNER OF THE GROUP!
 			}else{
-				System.out.println("Already a group with this name");
+				System.out.print("Already a group with this name");
 				//group list already has name
 			}
 		}
@@ -150,7 +150,7 @@ import java.util.*;
 			/////--------GROUP_LIST--------////////
 				if(group_list.containsKey(groupname)){ //if the group is already alive and kicking
 					if(group_list.get(groupname).contains(user)){
-					System.out.println("User is already in the group");
+					System.out.print("User is already in the group");
 					//do nothing, user already part of the group
 					}else{
 						group_list.get(groupname).add(user); //add user to the list of members of GROUPNAME

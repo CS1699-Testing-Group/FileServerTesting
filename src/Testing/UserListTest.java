@@ -14,10 +14,8 @@ import org.mockito.*;
 
 //import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
-import Main.Token;
 import Main.UserList;
 import Main.UserList.User;
-import Main.UserToken;
 
 //this test class validates updation of two Hashtables that serve as a database for group membership in the groupserver system
 public class UserListTest {
@@ -93,7 +91,7 @@ public class UserListTest {
 	public void TestAlreadyCreatedGroup(){
 		userList.createGroup("John", "JohnsGroup");
 		userList.createGroup("John", "JohnsGroup");
-		assertEquals("Already a group with this name\n",outContent.toString());
+		assertEquals("Already a group with this name",outContent.toString());
 	}
 	
 	//creating a group should add the creator to the list of group members.
@@ -141,7 +139,7 @@ public class UserListTest {
 		userList.addUser("John");
 		userList.createGroup("John", "JohnsGroup");
 		userList.addGroup("John", "JohnsGroup");
-		assertEquals("User is already in the group\n",outContent.toString());
+		assertEquals("User is already in the group",outContent.toString());
 	}
 	
 	//adding multiple users to a group should populate that groups list with those names
