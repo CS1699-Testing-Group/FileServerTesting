@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
 import Main.*;
@@ -35,9 +36,9 @@ public class FileListTest {
 			fail();
 		}
 		ShareFile sf = f.list.get(0);
-		assert(sf.getGroup() == "TestGroup");
-		assert(sf.getPath() == "TestPath");
-		assert(sf.getOwner() == "TestOwner");
+		assertEquals(sf.getGroup(),"TestGroup");
+		assertEquals(sf.getPath() , "TestPath");
+		assertEquals(sf.getOwner() ,"TestOwner");
 	}
 	
 	@Test
@@ -47,7 +48,7 @@ public class FileListTest {
 		ShareFile sf = new ShareFile("Test","Test","TestPath");
 		f.list.add(sf);
 		f.removeFile("TestPath");
-		assert(f.list.size() == 0);
+		assertEquals(f.list.size(), 0);
 				
 	}
 	
@@ -57,7 +58,7 @@ public class FileListTest {
 		FileList f = new FileList();
 		ShareFile sf = new ShareFile("Test","Test","TestPath");
 		f.list.add(sf);
-		assert(f.checkFile("TestPath"));
+		assertEquals(f.checkFile("TestPath"), true);
 	}
 	
 	@Test
@@ -65,7 +66,7 @@ public class FileListTest {
 	{
 		FileList f = new FileList();
 		
-		ShareFile sfa = new ShareFile("TestA","TestA","z");
+		ShareFile sfa = new ShareFile("TestA","TestA","a");
 		ShareFile sfb = new ShareFile("TestB","TestB","b");
 		ShareFile sfc = new ShareFile("TestC","TestC","c");
 		ShareFile sfd = new ShareFile("TestD","TestD","d");
@@ -80,18 +81,28 @@ public class FileListTest {
 		
 		if(sfl.size() != 4) fail();
 		
-		assert(sfl.get(0).equals(sfa));
-		assert(sfl.get(0).path == "a");
-		
-		assert(sfl.get(1).equals(sfb));
-		assert(sfl.get(1).path == "b");
-		
-		assert(sfl.get(2).equals(sfc));
-		assert(sfl.get(2).path == "c");
-		
-		assert(sfl.get(3).equals(sfd));
-		assert(sfl.get(3).path == "d");
+		assertEquals(sfl.get(0),sfa);
+
+		assertEquals(sfl.get(1),sfb);
+
+		assertEquals(sfl.get(2),sfc);
+
+		assertEquals(sfl.get(3),sfd);
+
 	}
+	
+	@Test
+	public void testGetFile()
+	{
+		String s = "testPath";
+		ShareFile sf = new ShareFile("Test","Test",s);
+		FileList f = new FileList();
+		f.list.add(sf);
+		ShareFile ret = f.getFile(s);
+
+		assertEquals(sf,ret);
+	}
+	
 	
 
 }
