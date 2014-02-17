@@ -13,7 +13,8 @@ public class EnvelopeTest {
 	
 	int i = 0;
 	
-	@Test	//Tests envelope to make sure received value is equal to entered value. Test by MDS
+	@Test	//Tests envelope to make sure received value is equal to entered value. 
+			//Test by MDS
 	public void testEnvelopeGetMessage(){
 		String testString = "hello";
 		String getString;
@@ -22,7 +23,8 @@ public class EnvelopeTest {
 		assertTrue(getString.equals(testString));
 	}
 	
-	@Test	//Tests adding objects to an envelope. Makes sure that added Objects are actually added. Tested by MDS
+	@Test	//Tests adding objects to an envelope. Makes sure that added Objects are actually added. 
+			//Tested by MDS
 	public void testEnvelopeAddObjects(){
 		String testString = "hello";
 		Object obj = new Object();
@@ -32,7 +34,8 @@ public class EnvelopeTest {
 	}
 	
 	@Test	//Tests adding objects to the envelope and counts an exact number of those objects. Compares envelope's
-			//count to actual count.																//Tested by MDS
+			//count to actual count.																
+			//Tested by MDS
 	public void testEnvelopeAddObjectsSize(){
 		String testString = "hello";
 		Envelope env = new Envelope(testString);
@@ -50,5 +53,14 @@ public class EnvelopeTest {
 		
 		assertTrue (i == env.getObjContents().size());
 	}
+	
+	@Test	//Tests returning elements from empty envelope's object list to make sure it returns no non-added elements
+			//Tested by MDS
+	public void testEnvelopeReturnNull(){
+		String testString = "hello";
+		Envelope env = new Envelope(testString);
+		assertTrue(env.getObjContents().isEmpty());
+	}
+	
 	
 }
