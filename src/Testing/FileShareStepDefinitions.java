@@ -40,7 +40,7 @@ public class FileShareStepDefinitions{
 	}
 	
 	@Then("The group server shall confirm it received the file successfully")
-	public void group_server_received_file_check(){
+	public void file_server_received_file_check(){
 		UserToken token = new Token();
 		Mockito.when(m_fc.upload(file_loc, file_dest, group, token)).thenReturn(true);
 		confirm = m_fc.upload(file_loc, file_dest, group, token);
