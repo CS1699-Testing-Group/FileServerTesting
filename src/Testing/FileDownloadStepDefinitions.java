@@ -24,17 +24,17 @@ public class FileDownloadStepDefinitions{
 		m_fc = Mockito.mock(FileClient.class);
 	}
 	
-	@When("The file I want to download is (.+)$")
-	public void choose_file_source(){
-		file_source = "testersfile/thisfile";
+	@When("The file I want to download is located at the directory (.+)$")
+	public void choose_file_source(String mySource){
+		file_source = mySource;
 	}
 	
-	@And("I want to download the file to (.+)$")
-	public void choose_file_dest(){
-		file_dest = "testersfile/thisfile";
+	@And("I want to download the file to the directory (.+)$")
+	public void choose_file_dest(String myDestination){
+		file_dest = myDestination;
 	}
 	
-	@Then("I shall be able to confirm the file (.+) is downloaded to my computer")
+	@Then("I shall be able to confirm the file is downloaded to my computer")
 	public void confirm_download(){
 		UserToken token = new Token();
 		Mockito.when(m_fc.download(file_source, file_dest, token)).thenReturn(true);
