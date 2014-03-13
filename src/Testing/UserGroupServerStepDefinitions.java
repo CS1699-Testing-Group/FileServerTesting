@@ -8,7 +8,7 @@ import cucumber.api.java.en.When;
 import static org.junit.Assert.*;
 import java.io.PrintStream;
 
-public class UserListStepdefs {
+public class UserGroupServerStepDefinitions {
 
 	private UserList userlist;
 	private String currentUser;
@@ -26,13 +26,6 @@ public class UserListStepdefs {
     	streamSetUp();
     }
     
-    @Given("I am the administrator")
-    public void set_up_with_admin(){
-    	userlist = new UserList();
-    	userlist.addUser("Owner");
-    	userlist.createGroup("Owner", "ADMIN");
-    	userlist.addOwnership("Owner", "ADMIN");
-    }
     @Given("(.*) is the owner of the group(.*)")
     public void give_ownership(String username, String groupname){
     	userlist.addOwnership(username, groupname);
@@ -68,17 +61,7 @@ public class UserListStepdefs {
         userlist.createGroup(currentUser, groupname);
         currentGroupname = groupname;
     }
-    
-    @When("I create a new user (.*)")
-    public void create_user(String username){
-    	userlist.addUser(username);
-    }
-    
-    @When("I delete user (.*)")
-    public void delete_user(String username){
-    	userlist.deleteUser(username);
-    }
-    
+   
     @When("^I grant (.*) ownership of (.*)$")
     public void grant_ownership(String username, String groupname){
     	userlist.addOwnership(username, groupname);
