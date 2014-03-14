@@ -96,9 +96,10 @@ import java.util.*;
 				group_list.remove(groupname);//delete entry in group_list hashtable for group once we are done with it
 				
 				}else{
-				//group doesn't even exist...
+					System.out.print("Group doesn't exist");
 				}
 			}
+			System.out.print("Group doesn't exist");
 		}
 		
 		public synchronized void removeMemberFromGroup(String username, String groupName){
