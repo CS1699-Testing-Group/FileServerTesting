@@ -6,6 +6,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.junit.Assert.*;
+
 import java.io.PrintStream;
 
 public class UserGroupServerStepDefinitions {
@@ -16,7 +17,18 @@ public class UserGroupServerStepDefinitions {
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 	
-	
+	@Given("I am the administrator")
+	public void set_up_with_admin() {
+		userlist = new UserList();
+		userlist.addUser("Owner");
+		userlist.createGroup("Owner", "ADMIN");
+		userlist.addOwnership("Owner", "ADMIN");
+	}
+	 
+    @Given("user (.*) exists")
+    public void establish_user(String username){
+    	userlist.addUser(username);
+    }
     
     @Given("^I am logged into the server with a registered username (.*)$")
     public void set_up_with_username(String username) {
@@ -29,11 +41,6 @@ public class UserGroupServerStepDefinitions {
     @Given("(.*) is the owner of the group(.*)")
     public void give_ownership(String username, String groupname){
     	userlist.addOwnership(username, groupname);
-    }
-    
-    @Given("user (.*) exists")
-    public void establish_user(String username){
-    	userlist.addUser(username);
     }
     
     @Given("group (.*) exists")
@@ -56,6 +63,16 @@ public class UserGroupServerStepDefinitions {
     	userlist.addGroup(username, groupname);
     }
 
+    @When("I create a new user (.*)")
+	public void create_user(String username) {
+		userlist.addUser(username);
+	}
+
+	@When("I delete user (.*)")
+	public void delete_user(String username) {
+		userlist.deleteUser(username);
+	}
+	
     @When("^I create a group called (.*)$")
     public void create_group_request(String groupname) {    	
         userlist.createGroup(currentUser, groupname);
@@ -114,21 +131,21 @@ public class UserGroupServerStepDefinitions {
     public void checkDeleted(String groupname){
     	assertFalse(userlist.groupExists(groupname));
     }
-        
-    @Then("user (.*) shows up")
-    public void check_user_exists(String username){
-    	assertTrue(userlist.checkUser(username));
-    }
-    
-    @Then("user (.*) should not show up")
-    public void check_user_doesnt_exist(String username){
-    	assertFalse(userlist.checkUser(username));
-    }
     
     @Then("group (.*) should not contain user (.*)")
     public void check_user_deleted_from_group(String groupname,String username){
     	assertFalse(userlist.getUserGroups(username).contains(groupname));
     }
+    
+    @Then("user (.*) shows up")
+	public void check_user_exists(String username) {
+		assertTrue(userlist.checkUser(username));
+	}
+
+	@Then("user (.*) should not show up")
+	public void check_user_doesnt_exist(String username) {
+		assertFalse(userlist.checkUser(username));
+	}
     
     public void streamSetUp(){
     	System.setOut(new PrintStream(outContent));
