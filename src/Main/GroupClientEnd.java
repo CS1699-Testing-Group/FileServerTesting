@@ -1,4 +1,3 @@
-package Main;
 // group client that deals with signals from main program
 public class GroupClientEnd {
 	
@@ -19,6 +18,8 @@ public class GroupClientEnd {
 		
 		
 	}
+	
+	
 	
 		
 }

@@ -1,35 +1,109 @@
-package Main;
 /* This list represents the users on the server */
 import java.util.*;
-
-
+import java.security.*;
+import javax.crypto.*;
+import java.io.*;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 	public class UserList implements java.io.Serializable {
 	
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 7600343803563417992L;
-		public Hashtable<String, User> list = new Hashtable<String, User>();
-		public Hashtable<String, List<String>> group_list = new Hashtable<String, List<String>>();//(GROUPNAME,LISTofMEMBERS)
+		private Hashtable<String, User> list = new Hashtable<String, User>();
+		private Hashtable<String, List<String>> group_list = new Hashtable<String, List<String>>();//(GROUPNAME,LISTofMEMBERS)
+		public Hashtable<String,ArrayList<String>> groupKeyTable = new Hashtable<String,ArrayList<String>>(); //key storage on GS side
+
 		
-		
+
 		public synchronized void createGroup(String requester,String groupname){
 			if(!group_list.containsKey(groupname)){
+				System.out.println("Creating a group");
 				List<String>newGroup = new ArrayList<String>();
 				newGroup.add(requester);
-				group_list.put(groupname, newGroup);	
+				group_list.put(groupname, newGroup);
 				
-				//ERROR!!!!!!!!THIS SHOULD MAKE SAID USER THE OWNER OF THE GROUP!
+				System.out.println("Group was created");
+				Enumeration<String> enumKey = group_list.keys();
+				while(enumKey.hasMoreElements()){ //remove username from all groups in group_list
+					String key = enumKey.nextElement();
+				    List<String> val = group_list.get(key);
+				    System.out.println("one group is "+ key +" with value "+val);
+				}	
 			}else{
-				System.out.print("Already a group with this name");
+				System.out.println("Already a group with this name...");
 				//group list already has name
 			}
 		}
-		public synchronized void addUser(String username)
+		public synchronized void addUser(String username, String password)
 		{
-			User newUser = new User();
-			list.put(username, newUser);
+			
+			byte doHash[] = null;
+		try { // to create array of bytes from input
+			doHash = new String(password).getBytes("UTF8");
 		}
+		catch (UnsupportedEncodingException e) {
+			e.printStackTrace(System.err);
+			
+		}
+		try { // to get hash of byte array
+
+                Security.addProvider(new BouncyCastleProvider());
+			MessageDigest messageDigest = MessageDigest.getInstance("SHA1", "BC");
+			messageDigest.update(doHash);
+			byte sol[] = messageDigest.digest();
+			 User newUser = new User(password, sol);
+			
+			list.put(username, newUser);
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace(System.err);
+			
+		}
+			
+		}
+		public synchronized boolean checkPassword(String username, String password)
+		{
+			if(!list.isEmpty()){
+				
+				if(list.containsKey(username)){
+					
+					 User check = list.get(username);
+					 
+					 if (check.userPassword.equals(password)){
+					 	return true;
+					 }
+					
+				}else{
+					return false;
+				}
+			}else{
+				return false;
+			}
+			return false;
+		}
+
+		public synchronized byte[] returnHash(String username)
+	{
+	
+	if(!list.isEmpty()){
+				
+				if(list.containsKey(username)){
+					
+					 User check = list.get(username);
+					 
+					 return check.pw;
+					
+				}else{
+					return null;
+				}
+			}else{
+				return null;
+			}	
+
+		
+	}
 		
 		public synchronized boolean groupExists(String groupname){
 			
@@ -96,10 +170,9 @@ import java.util.*;
 				group_list.remove(groupname);//delete entry in group_list hashtable for group once we are done with it
 				
 				}else{
-					System.out.print("Group doesn't exist");
+				//group doesn't even exist...
 				}
 			}
-			System.out.print("Group doesn't exist");
 		}
 		
 		public synchronized void removeMemberFromGroup(String username, String groupName){
@@ -145,15 +218,20 @@ import java.util.*;
 		{
 			if(!list.isEmpty()){
 				list.get(user).groups.add(groupname); //add group to user's list of groups they belong to
+				System.out.println("User added to the group "+groupname);
 			}
 			
 			if(!group_list.isEmpty()){
+				System.out.println("Group list isn't empty");
 			/////--------GROUP_LIST--------////////
 				if(group_list.containsKey(groupname)){ //if the group is already alive and kicking
+					System.out.println("Group list contains the group name" + group_list.contains(groupname));
 					if(group_list.get(groupname).contains(user)){
-					System.out.print("User is already in the group");
+					System.out.println("User already in group...");
 					//do nothing, user already part of the group
 					}else{
+						System.out.println("User isn't in the group and it exists");
+						System.out.println("Adding user "+user+" to group "+groupname);
 						group_list.get(groupname).add(user); //add user to the list of members of GROUPNAME
 					}
 				}else{
@@ -177,7 +255,7 @@ import java.util.*;
 		}
 		
 	
-	public class User implements java.io.Serializable {
+	class User implements java.io.Serializable {
 
 		/**
 		 * 
@@ -185,11 +263,16 @@ import java.util.*;
 		private static final long serialVersionUID = -6699986336399821598L;
 		private ArrayList<String> groups;
 		private ArrayList<String> ownership;
-		
-		public User()
+		private String userPassword;
+
+		private byte pw[];
+
+		public User(String password, byte pw1[])
 		{
 			groups = new ArrayList<String>();
 			ownership = new ArrayList<String>();
+			userPassword = password;
+			pw = pw1;
 		}
 		
 		public ArrayList<String> getGroups()
