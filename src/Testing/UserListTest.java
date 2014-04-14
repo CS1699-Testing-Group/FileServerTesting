@@ -12,8 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.*;
 
-//import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
 import Main.UserList;
 import Main.UserList.User;
 
@@ -69,7 +67,7 @@ public class UserListTest {
 	public void AddUserTest(){
 		boolean first = userList.checkUser("John");
 		if(!first){
-			userList.list.put("John", Mockito.mock(Main.UserList.User.class));
+			userList.list.put("John", Mockito.mock(UserList.User.class));
 			assertTrue(userList.checkUser("John"));
 		}
 	}

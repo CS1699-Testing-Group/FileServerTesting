@@ -169,10 +169,10 @@ public class FileClientSubInterfaceTest {
 		Mockito.when(FC.connect(o, 0)).thenReturn(false);
 		UserToken t = Mockito.mock(UserToken.class);
 		
-		boolean ret = FCSI.startFileInterface(o, 0, t);
+		FCSI.startFileInterface(o, 0, t);
 		
 		assertTrue(outContent.toString().contains("Error Connecting to the File Server."));
-		assertFalse(ret);
+
 	}
 	
 

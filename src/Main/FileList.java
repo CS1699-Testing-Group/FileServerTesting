@@ -1,3 +1,6 @@
+package Main;
+
+
 /* T
  * his list represents the files on the server */
 import java.util.*;
@@ -7,16 +10,16 @@ import java.util.*;
 		
 	/*Serializable so it can be stored in a file for persistence */
 	private static final long serialVersionUID = -8911161283900260136L;
-	private ArrayList<ShareFile> list;
+	public ArrayList<ShareFile> list;
 	
 	public FileList()
 	{
 		list = new ArrayList<ShareFile>();
 	}
 	
-	public synchronized void addFile(String owner, String group, String path, int int_keyVersion)
+	public synchronized void addFile(String owner, String group, String path)
 	{
-		ShareFile newFile = new ShareFile(owner, group, path, int_keyVersion);
+		ShareFile newFile = new ShareFile(owner, group, path);
 		list.add(newFile);
 	}
 	

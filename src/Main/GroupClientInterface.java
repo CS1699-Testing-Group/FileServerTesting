@@ -1,3 +1,5 @@
+package Main;
+
 import java.util.List;
 
 /**
@@ -38,7 +40,7 @@ public interface GroupClientInterface
      *         If this user does not exist, a null value will be returned.
      *
      */
-    public byte[] getToken(final byte[] username, byte[] password);
+    public UserToken getToken(final String username);
 
 
     /**

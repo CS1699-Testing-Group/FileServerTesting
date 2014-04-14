@@ -6,8 +6,8 @@ import static org.junit.Assert.*;
 import org.mockito.*;
 
 import Main.FileClient;
-import Main.UserToken;
 import Main.Token;
+import Main.UserToken;
 
 public class FileDownloadFailStepDefinitions{
 	

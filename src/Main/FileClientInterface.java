@@ -1,10 +1,6 @@
+package Main;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.util.List;
-
-import javax.crypto.NoSuchPaddingException;
 
 /**
  * Interface describing the operations that must be supported by the
@@ -58,12 +54,9 @@ public interface FileClientInterface
      * @param token      The token of the user uploading the file
      *
      * @return true on success, false on failure
-     * @throws IOException 
-     * @throws NoSuchPaddingException 
-     * @throws NoSuchProviderException 
      *
      */
-    public boolean upload(final String sourceFile, final String destFile, final String group, final UserToken token) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException;
+    public boolean upload(final String sourceFile, final String destFile, final String group, final UserToken token);
 
 
     /**

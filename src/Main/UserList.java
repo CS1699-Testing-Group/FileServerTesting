@@ -1,21 +1,18 @@
+package Main;
 /* This list represents the users on the server */
 import java.util.*;
-import java.security.*;
-import javax.crypto.*;
-import java.io.*;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+
 	public class UserList implements java.io.Serializable {
 	
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 7600343803563417992L;
-		private Hashtable<String, User> list = new Hashtable<String, User>();
+		public Hashtable<String, User> list = new Hashtable<String, User>();
 		private Hashtable<String, List<String>> group_list = new Hashtable<String, List<String>>();//(GROUPNAME,LISTofMEMBERS)
-		public Hashtable<String,ArrayList<String>> groupKeyTable = new Hashtable<String,ArrayList<String>>(); //key storage on GS side
-
 		
-
+		
 		public synchronized void createGroup(String requester,String groupname){
 			if(!group_list.containsKey(groupname)){
 				System.out.println("Creating a group");
@@ -35,75 +32,11 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 				//group list already has name
 			}
 		}
-		public synchronized void addUser(String username, String password)
+		public synchronized void addUser(String username)
 		{
-			
-			byte doHash[] = null;
-		try { // to create array of bytes from input
-			doHash = new String(password).getBytes("UTF8");
-		}
-		catch (UnsupportedEncodingException e) {
-			e.printStackTrace(System.err);
-			
-		}
-		try { // to get hash of byte array
-
-                Security.addProvider(new BouncyCastleProvider());
-			MessageDigest messageDigest = MessageDigest.getInstance("SHA1", "BC");
-			messageDigest.update(doHash);
-			byte sol[] = messageDigest.digest();
-			 User newUser = new User(password, sol);
-			
+			User newUser = new User();
 			list.put(username, newUser);
-			
 		}
-		catch (Exception e) {
-			e.printStackTrace(System.err);
-			
-		}
-			
-		}
-		public synchronized boolean checkPassword(String username, String password)
-		{
-			if(!list.isEmpty()){
-				
-				if(list.containsKey(username)){
-					
-					 User check = list.get(username);
-					 
-					 if (check.userPassword.equals(password)){
-					 	return true;
-					 }
-					
-				}else{
-					return false;
-				}
-			}else{
-				return false;
-			}
-			return false;
-		}
-
-		public synchronized byte[] returnHash(String username)
-	{
-	
-	if(!list.isEmpty()){
-				
-				if(list.containsKey(username)){
-					
-					 User check = list.get(username);
-					 
-					 return check.pw;
-					
-				}else{
-					return null;
-				}
-			}else{
-				return null;
-			}	
-
-		
-	}
 		
 		public synchronized boolean groupExists(String groupname){
 			
@@ -218,7 +151,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 		{
 			if(!list.isEmpty()){
 				list.get(user).groups.add(groupname); //add group to user's list of groups they belong to
-				System.out.println("User added to the group "+groupname);
 			}
 			
 			if(!group_list.isEmpty()){
@@ -255,7 +187,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 		}
 		
 	
-	class User implements java.io.Serializable {
+	public class User implements java.io.Serializable {
 
 		/**
 		 * 
@@ -263,16 +195,11 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 		private static final long serialVersionUID = -6699986336399821598L;
 		private ArrayList<String> groups;
 		private ArrayList<String> ownership;
-		private String userPassword;
-
-		private byte pw[];
-
-		public User(String password, byte pw1[])
+		
+		public User()
 		{
 			groups = new ArrayList<String>();
 			ownership = new ArrayList<String>();
-			userPassword = password;
-			pw = pw1;
 		}
 		
 		public ArrayList<String> getGroups()
